@@ -1,0 +1,7 @@
+---
+# vars file for ssh-key-ec2
+my_keyfile: "{{ lookup('env','HOME') }}/.ssh/id_rsa"
+my_public_key: "{{ my_keyfile }}.pub" 
+my_keyname: "{{ uuid }}-lab-key"
+ssh_key_dir: "{{ lookup('env','HOME') }}/.ssh/"
+region: us-east-2

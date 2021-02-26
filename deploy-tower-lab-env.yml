@@ -1,0 +1,94 @@
+---
+# Deploy systems for Ansible Tower lab env
+- name: Assign UUID to demo deployment
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Generate UUID
+    shell:
+      uuidgen | cut -b 1,2,3,4
+    register: uuid_output
+
+  - name: Set UUID fact
+    set_fact:
+      uuid: "{{ uuid_output.stdout }}"
+  tags: always
+
+- name: Provision lab systems on AWS EC2
+  hosts: localhost
+  gather_facts: false
+  vars:
+    image: "{{ lab_systems[system_type].image }}"
+    instance_type: "{{ lab_systems[system_type].instance_type }}"
+    host_prefix: "{{ lab_systems[system_type].hostprefix }}"
+  tasks:
+  - name: Upload SSH public key to AWS EC2
+    include_role:
+      name: ssh-key-ec2
+    tags: always
+
+  - name: Provision RHEL 8 Tower systems
+    include_role:
+      name: deploy-rhel-ec2-instance
+    vars:
+      system_type: "rhel8_tower"
+    tags: rhel8
+
+  - name: Provision RHEL 8 lab systems
+    include_role:
+      name: deploy-rhel-ec2-instance
+    vars:
+      system_type: "rhel8_client"
+    tags: rhel8
+
+  - name: Provision Windows 2019 lab systems
+    include_role:
+      name: deploy-win2019-ec2-instance
+    vars:
+      system_type: "win2019_client"
+    tags: win2019
+
+  - name: Remove SSH public key from AWS EC2
+    vars:
+      remove_aws_key: true
+    include_role:
+      name: ssh-key-ec2
+    tags: always
+
+- name: Configure RHEL lab systems
+  gather_facts: false
+  hosts: launched_rhel_instances
+  tasks:
+  - name: Wait for host to start
+    wait_for_connection:
+      connect_timeout: 20
+      sleep: 5
+      timeout: 600
+
+  - name: Add RHEL local accounts
+    include_role:
+      name: rhel-local-accounts
+
+  - name: Configure RHEL ec2 instances
+    include_role:
+      name: config-rhel-ec2-instance
+  tags: rhel8
+
+- name: Configure Windows 2019 lab systems
+  gather_facts: false
+  hosts: launched_win2019_instances
+  tasks:
+  - name: Wait for host to start
+    wait_for_connection:
+      connect_timeout: 20
+      sleep: 5
+      timeout: 600
+
+  - name: Add Windows local accounts
+    include_role:
+      name: win-local-accounts
+
+  - name: Configure Windows 2019 ec2 instances
+    include_role:
+      name: config-win2019-ec2-instance
+  tags: win2019

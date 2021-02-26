@@ -1,0 +1,13 @@
+---
+# tasks file for win-local-accounts
+- name: Configure local accounts
+  block:
+  - name: Add local user
+    win_user:
+      name: "{{ username }}"
+      password: "{{ password }}"
+      description: "{{ description }}"
+      fullname: "{{ fullname }}"
+      password_never_expires: "{{ password_never_expires }}"
+      state: present
+      groups: "{{ groups }}"

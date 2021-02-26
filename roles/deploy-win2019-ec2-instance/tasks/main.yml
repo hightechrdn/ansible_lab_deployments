@@ -1,0 +1,45 @@
+---
+# tasks file for deploy-win2019-ec2-instance
+
+- name: Deploy new host on AWS EC2
+  block:
+  - name: Launch EC2 instance
+    ec2:
+       key_name: "{{ my_keyname }}"
+       group: "{{ security_groups }}"
+       instance_type: "{{ instance_type }}"
+       image: "{{ image }}"
+       count: "{{ count }}"
+       wait: true
+       region: "{{ region }}"
+       instance_tags:
+         deployment: "{{ uuid }}"
+         os_version: "{{ os_version }}"
+         project: "{{ project }}"
+         purpose: "{{ purpose }}"
+         user: "{{ user }}"
+       vpc_subnet_id: "{{ vpc_subnet_id }}"
+       assign_public_ip: no
+    register: ec2
+
+  - name: Set EC2 instance Name
+    ec2_tag:
+      region: "{{ region }}"
+      resource: "{{ item.id }}"
+      state: present
+      tags:
+        Name: "{{ short_name }}"
+    loop: "{{ ec2.instances }}"
+
+  - name: Add new instance to host group
+    add_host:
+      groups:
+        - launched_win2019_instances
+      ami_launch_index: "{{ item.ami_launch_index }}"
+      canonical_name: "{{ short_name }}.{{ domain }}"
+      hostname: "{{ item.private_ip }}"
+      id: "{{ item.id }}"
+      private_ip: "{{ item.private_ip }}"
+      short_name: "{{ short_name }}"
+      uuid: "{{ uuid }}"
+    loop: "{{ ec2.instances }}"

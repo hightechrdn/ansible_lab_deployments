@@ -1,0 +1,3 @@
+---
+# defaults file for ssh-key-ec2
+remove_aws_key: False

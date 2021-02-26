@@ -1,0 +1,28 @@
+---
+# Deploy systems for Ansible Tower lab env
+- name: Assign UUID to demo deployment
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Generate UUID
+    shell:
+      uuidgen | cut -b 1,2,3,4
+    register: uuid_output
+
+  - name: Set UUID fact
+    set_fact:
+      uuid: "{{ uuid_output.stdout }}"
+  tags: always
+
+- name: debug
+  hosts: localhost
+  gather_facts: false
+  vars_files:
+  - group_vars/launched_win2019_instances/main.yml
+  tasks:
+  - name: print debug 1
+    debug:
+      msg: "The UUID is {{ uuid }}"
+  - name: print debug 2
+    debug:
+      msg: "ansible_password is {{ ansible_password }}"

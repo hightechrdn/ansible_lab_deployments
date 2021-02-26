@@ -1,0 +1,13 @@
+---
+# tasks file for config-rhel-ec2-instance
+- name: Basic host configuration
+  become: True
+  block:
+  - name: Set hostname on new host
+    command: "hostnamectl set-hostname {{ canonical_name }}"
+
+  - name: Update /etc/hosts on new host
+    lineinfile:
+      path: "/etc/hosts"
+      regexp: "{{ ip_address }}"
+      line: "{{ ip_address }} {{ canonical_name }} {{ short_name }}"

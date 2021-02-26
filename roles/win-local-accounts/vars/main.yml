@@ -1,0 +1,8 @@
+---
+# vars file for win-local-accounts
+username: "{{ lookup('env','USER') }}"
+password: "sdg@2021"
+description: "local admin"
+fullname: ""
+password_never_expires: true
+groups: "Administrators"

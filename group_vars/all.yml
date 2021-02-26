@@ -1,0 +1,31 @@
+---
+# General lab environment settings
+domain: "demo1.pd.stonedoor.io"
+project: "tower-{{ uuid }}"
+region: "us-east-2"
+
+ansible_winrm_operation_timeout_sec: 40
+ansible_winrm_read_timeout_sec: 120
+ansible_winrm_server_cert_validation: ignore
+
+# set default filters for destroy-ec2-instances role
+filters:
+  "tag:deployment": "{{ UUID }}"
+
+# set AWS network defaults
+vpc_subnet_id: "subnet-0c020946935fab135"
+security_groups: "lab-systems-private"
+
+lab_systems:
+  rhel8_tower:
+    hostprefix: rhel8_tower
+    image: "ami-03d64741867e7bb94"
+    instance_type: "t3.large"
+  rhel8_client:
+    hostprefix: rhel8_client
+    image: "ami-03d64741867e7bb94"
+    instance_type: "t3.small"
+  win2019_client:
+    hostprefix: win2019_client
+    image: "ami-0b5b2dbd996f5527c"
+    instance_type: "t3.small"

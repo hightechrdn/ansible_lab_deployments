@@ -1,0 +1,24 @@
+---
+# tasks file for rhel-local-accounts
+- name: Configure local accounts
+  become: True
+  block:
+  - name: Create local user
+    user:
+      append: yes
+      groups: "{{ supplementary_groups }}"
+      name: "{{ username }}"
+      state: present
+
+  - name: Configure sudo to root without password for wheel group
+    lineinfile:
+      path: /etc/sudoers
+      regex: "^%wheel"
+      line: "%wheel        ALL=(ALL)       NOPASSWD: ALL"
+      state: present
+
+  - name: Add SSH public key to authorized_keys
+    authorized_key:
+      user: "{{ username }}"
+      state: present
+      key: "{{ lookup('file', '{{ my_public_key }}') }}"
