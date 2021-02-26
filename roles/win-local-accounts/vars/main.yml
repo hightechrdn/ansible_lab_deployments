@@ -5,4 +5,3 @@ password: "sdg@2021"
 description: "local admin"
 fullname: ""
 password_never_expires: true
-groups: "Administrators"

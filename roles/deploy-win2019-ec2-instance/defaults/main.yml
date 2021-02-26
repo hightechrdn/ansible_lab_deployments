@@ -1,12 +1,14 @@
 ---
 # defaults file for deploy-win2019-ec2-instance
+
 #image: No default, must set when calling role
 #region: No default, must set when calling role
 #vpc_subnet_id: No default, must set when calling role
 #security_groups: No default, must set when calling role
+
 count: 1
 instance_type: "t3.micro"
-project: "my-demo-environment"
-purpose: "Windows 2019 demo system"
+project: "my-lab-environment"
+purpose: "Windows 2019 lab system"
 os_version: "win2019"
 

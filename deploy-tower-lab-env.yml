@@ -92,3 +92,13 @@
     include_role:
       name: config-win2019-ec2-instance
   tags: win2019
+
+- name: Communicate deployment results
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Print lab information
+    debug:
+      msg: "Your UUID is {{ uuid }}. See {{ lab_data_dir }}/{{ uuid }}-lab-environment.txt for list of hosts deployed."
+  tags: always
+

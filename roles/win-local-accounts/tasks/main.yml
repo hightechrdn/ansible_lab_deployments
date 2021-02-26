@@ -10,4 +10,17 @@
       fullname: "{{ fullname }}"
       password_never_expires: "{{ password_never_expires }}"
       state: present
-      groups: "{{ groups }}"
+
+  - name: Add user to local Administrators group
+    win_group_membership:
+      name: Administrators
+      members:
+      - "{{ username }}"
+      state: present
+
+  - name: Add user to local Remote Desktop Users group
+    win_group_membership:
+      name: Remote Desktop Users
+      members:
+      - "{{ username }}"
+      state: present

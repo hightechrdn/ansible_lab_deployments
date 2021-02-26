@@ -18,14 +18,14 @@ security_groups: "lab-systems-private"
 
 lab_systems:
   rhel8_tower:
-    hostprefix: rhel8_tower
+    hostprefix: rhel8-tower
     image: "ami-03d64741867e7bb94"
     instance_type: "t3.large"
   rhel8_client:
-    hostprefix: rhel8_client
+    hostprefix: rhel8-client
     image: "ami-03d64741867e7bb94"
     instance_type: "t3.small"
   win2019_client:
-    hostprefix: win2019_client
+    hostprefix: win2019-client
     image: "ami-0b5b2dbd996f5527c"
     instance_type: "t3.small"

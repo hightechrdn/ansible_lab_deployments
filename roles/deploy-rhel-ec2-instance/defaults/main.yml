@@ -10,6 +10,6 @@ count: 1
 instance_type: "t3.micro"
 host_groups:
 - launched_rhel_instances
-project: "my-demo-environment"
-purpose: "RHEL demo system"
+project: "my-lab-environment"
+purpose: "RHEL lab system"
 os_version: "rhel"
