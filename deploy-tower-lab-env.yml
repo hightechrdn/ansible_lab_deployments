@@ -21,6 +21,7 @@
     host_prefix: "{{ lab_systems[system_type].hostprefix }}"
     image: "{{ lab_systems[system_type].image }}"
     instance_type: "{{ lab_systems[system_type].instance_type }}"
+    volumes: "{{ lab_systems[system_type]['volumes'] }}"
   tasks:
   - name: Upload SSH public key to AWS EC2
     include_role:
@@ -28,24 +29,24 @@
     tags: always
 
   - name: Provision RHEL 8 Tower systems
-    include_role:
-      name: deploy-rhel-ec2-instance
     vars:
       system_type: "rhel8_tower"
+    include_role:
+      name: deploy-rhel-ec2-instance
     tags: rhel8_tower
 
   - name: Provision RHEL 8 lab systems
-    include_role:
-      name: deploy-rhel-ec2-instance
     vars:
       system_type: "rhel8_client"
+    include_role:
+      name: deploy-rhel-ec2-instance
     tags: rhel8_client
 
   - name: Provision Windows 2019 lab systems
-    include_role:
-      name: deploy-win2019-ec2-instance
     vars:
       system_type: "win2019_client"
+    include_role:
+      name: deploy-windows-ec2-instance
     tags: win2019
 
   - name: Remove SSH public key from AWS EC2
@@ -74,9 +75,9 @@
       name: config-rhel-ec2-instance
   tags: rhel8_client, rhel8_tower
 
-- name: Configure Windows 2019 lab systems
+- name: Configure Windows lab systems
   gather_facts: false
-  hosts: launched_win2019_instances
+  hosts: launched_windows_instances
   tasks:
   - name: Wait for host to start
     wait_for_connection:
@@ -88,9 +89,9 @@
     include_role:
       name: win-local-accounts
 
-  - name: Configure Windows 2019 ec2 instances
+  - name: Configure Windows ec2 instances
     include_role:
-      name: config-win2019-ec2-instance
+      name: config-windows-ec2-instance
   tags: win2019
 
 - name: Communicate deployment info
@@ -112,10 +113,10 @@
   tags: rhel8_client, rhel8_tower
 
 - name: Communicate Windows lab system info
-  hosts: launched_win2019_instances
+  hosts: launched_windows_instances
   gather_facts: false
   tasks:
-  - name: Print lab info - Windows 2019 systems
+  - name: Print lab info - Windows systems
     include_role:
       name: lab-info
   tags: win2019

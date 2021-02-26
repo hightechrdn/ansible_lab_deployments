@@ -1,5 +1,4 @@
 ---
-# vars file for deploy-win2019-ec2-instance
+# vars file for deploy-windows-ec2-instance
 short_name: "{{ host_prefix }}-{{ uuid }}-{{ item.ami_launch_index }}"
 my_keyname: "{{ uuid }}-lab-key"
-user: "{{ lookup('env','USER') }}"

@@ -1,6 +1,6 @@
 ---
-# tasks file for config-win2019-ec2-instance
-- name: Configure Windows 2019 system
+# tasks file for config-windows-ec2-instance
+- name: Configure Windows system
   block:
   - name: Update hosts file
     win_hosts:

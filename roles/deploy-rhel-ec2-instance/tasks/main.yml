@@ -17,6 +17,7 @@
          project: "{{ project }}"
          purpose: "{{ purpose }}"
          user: "{{ user }}"
+       volumes: "{{ volumes }}"
        vpc_subnet_id: "{{ vpc_subnet_id }}"
        assign_public_ip: no
     register: ec2

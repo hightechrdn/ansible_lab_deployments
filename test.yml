@@ -18,7 +18,7 @@
   hosts: localhost
   gather_facts: false
   vars_files:
-  - group_vars/launched_win2019_instances/main.yml
+  - group_vars/launched_windows_instances/main.yml
   tasks:
   - name: print debug 1
     debug:

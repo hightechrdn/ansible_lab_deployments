@@ -1,5 +1,5 @@
 ---
-# defaults file for deploy-win2019-ec2-instance
+# defaults file for deploy-windows-ec2-instance
 
 #image: No default, must set when calling role
 #region: No default, must set when calling role
@@ -9,6 +9,10 @@
 count: 1
 instance_type: "t3.micro"
 project: "my-lab-environment"
-purpose: "Windows 2019 lab system"
-os_version: "win2019"
-
+purpose: "Windows lab system"
+os_version: "windows"
+user: "{{ lookup('env','USER') }}"
+volumes:
+- device_name: /dev/sda1
+  volume_type: gp2
+  volume_size: 30

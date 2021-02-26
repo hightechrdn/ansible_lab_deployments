@@ -21,11 +21,23 @@ lab_systems:
     hostprefix: rhel8-tower
     image: "ami-03d64741867e7bb94"
     instance_type: "t3.large"
+    volumes:
+    - device_name: /dev/sda1
+      volume_type: gp2
+      volume_size: 30
   rhel8_client:
     hostprefix: rhel8-client
     image: "ami-03d64741867e7bb94"
     instance_type: "t3.small"
+    volumes:
+    - device_name: /dev/sda1
+      volume_type: gp2
+      volume_size: 10
   win2019_client:
     hostprefix: win2019-client
     image: "ami-0b5b2dbd996f5527c"
     instance_type: "t3.small"
+    volumes:
+    - device_name: /dev/sda1
+      volume_type: gp2
+      volume_size: 30

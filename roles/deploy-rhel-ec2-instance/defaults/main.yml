@@ -13,3 +13,7 @@ host_groups:
 project: "my-lab-environment"
 purpose: "RHEL lab system"
 os_version: "rhel"
+volumes:
+- device_name: /dev/sda1
+  volume_type: gp2
+  volume_size: 10

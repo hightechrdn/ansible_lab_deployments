@@ -1,5 +1,5 @@
 ---
-# tasks file for deploy-win2019-ec2-instance
+# tasks file for deploy-windows-ec2-instance
 
 - name: Deploy new host on AWS EC2
   block:
@@ -18,6 +18,7 @@
          project: "{{ project }}"
          purpose: "{{ purpose }}"
          user: "{{ user }}"
+       volumes: "{{ volumes }}"
        vpc_subnet_id: "{{ vpc_subnet_id }}"
        assign_public_ip: no
     register: ec2
@@ -34,7 +35,7 @@
   - name: Add new instance to host group
     add_host:
       groups:
-        - launched_win2019_instances
+        - launched_windows_instances
       ami_launch_index: "{{ item.ami_launch_index }}"
       canonical_name: "{{ short_name }}.{{ domain }}"
       hostname: "{{ item.private_ip }}"

@@ -1,0 +1,7 @@
+---
+# defaults file for win-local-accounts
+username: "{{ lookup('env','USER') }}"
+password: "SDG@2021"
+description: "local admin"
+fullname: ""
+password_never_expires: true

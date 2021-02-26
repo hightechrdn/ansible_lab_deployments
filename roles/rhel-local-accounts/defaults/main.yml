@@ -1,0 +1,6 @@
+---
+# defaults file for rhel-local-accounts
+my_keyfile: "{{ lookup('env','HOME') }}/.ssh/id_rsa"
+my_public_key: "{{ my_keyfile }}.pub"
+username: "{{ lookup('env','USER') }}"
+supplementary_groups: "wheel"
