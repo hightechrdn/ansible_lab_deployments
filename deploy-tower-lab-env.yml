@@ -99,6 +99,6 @@
   tasks:
   - name: Print lab information
     debug:
-      msg: "Your UUID is {{ uuid }}. See {{ lab_data_dir }}/{{ uuid }}-lab-environment.txt for list of hosts deployed."
+      msg: "Your lab UUID is {{ uuid }}."
   tags: always
 
