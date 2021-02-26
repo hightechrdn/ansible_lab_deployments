@@ -18,9 +18,9 @@
   hosts: localhost
   gather_facts: false
   vars:
+    host_prefix: "{{ lab_systems[system_type].hostprefix }}"
     image: "{{ lab_systems[system_type].image }}"
     instance_type: "{{ lab_systems[system_type].instance_type }}"
-    host_prefix: "{{ lab_systems[system_type].hostprefix }}"
   tasks:
   - name: Upload SSH public key to AWS EC2
     include_role:
@@ -32,14 +32,14 @@
       name: deploy-rhel-ec2-instance
     vars:
       system_type: "rhel8_tower"
-    tags: rhel8
+    tags: rhel8_tower
 
   - name: Provision RHEL 8 lab systems
     include_role:
       name: deploy-rhel-ec2-instance
     vars:
       system_type: "rhel8_client"
-    tags: rhel8
+    tags: rhel8_client
 
   - name: Provision Windows 2019 lab systems
     include_role:
@@ -72,7 +72,7 @@
   - name: Configure RHEL ec2 instances
     include_role:
       name: config-rhel-ec2-instance
-  tags: rhel8
+  tags: rhel8_client, rhel8_tower
 
 - name: Configure Windows 2019 lab systems
   gather_facts: false
@@ -93,12 +93,29 @@
       name: config-win2019-ec2-instance
   tags: win2019
 
-- name: Communicate deployment results
+- name: Communicate deployment info
   hosts: localhost
   gather_facts: false
   tasks:
-  - name: Print lab information
+  - name: Print UUID
     debug:
       msg: "Your lab UUID is {{ uuid }}."
   tags: always
 
+- name: Communicate RHEL lab system info
+  hosts: launched_rhel_instances
+  gather_facts: false
+  tasks:
+  - name: Print lab info - RHEL systtems
+    include_role:
+      name: lab-info
+  tags: rhel8_client, rhel8_tower
+
+- name: Communicate Windows lab system info
+  hosts: launched_win2019_instances
+  gather_facts: false
+  tasks:
+  - name: Print lab info - Windows 2019 systems
+    include_role:
+      name: lab-info
+  tags: win2019

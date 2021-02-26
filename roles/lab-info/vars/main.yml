@@ -1,0 +1,5 @@
+---
+# vars file for lab-info
+canonical_name: "{{ hostvars[inventory_hostname]['canonical_name'] }}"
+ip_address: "{{ hostvars[inventory_hostname]['private_ip'] }}"
+short_name: "{{ hostvars[inventory_hostname]['short_name'] }}"
