@@ -12,12 +12,17 @@
   - name: Set UUID fact
     set_fact:
       uuid: "{{ uuid_output.stdout }}"
+ 
+  - name: Print UUID
+    debug:
+      msg: "New lab environment UUID = {{ uuid }}"
   tags: always
 
 - name: Provision lab systems on AWS EC2
   hosts: localhost
   gather_facts: false
   vars:
+    count: "{{ lab_systems[system_type].count }}"
     host_prefix: "{{ lab_systems[system_type].hostprefix }}"
     image: "{{ lab_systems[system_type].image }}"
     instance_type: "{{ lab_systems[system_type].instance_type }}"
