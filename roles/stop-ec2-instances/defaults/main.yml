@@ -1,0 +1,6 @@
+---
+# defaults for stop-ec2-instances
+#region: No default, must set when calling role
+# filter set to default value that won't match any EC2 instances as a safe guard
+filters: 
+   "tag:Name": ryFZQBD3+dfVCbngdG9q8Q==

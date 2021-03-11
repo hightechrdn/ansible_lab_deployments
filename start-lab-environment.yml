@@ -1,0 +1,9 @@
+---
+# start_lab_environment.yml
+- name: Start EC2 instances
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Call start-ec2-instances role
+    include_role:
+      name: start-ec2-instances 

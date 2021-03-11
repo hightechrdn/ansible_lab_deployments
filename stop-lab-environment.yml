@@ -1,0 +1,9 @@
+---
+# stop_lab_environment.yml
+- name: Stop EC2 instances
+  hosts: localhost
+  gather_facts: false
+  tasks:
+  - name: Call stop-ec2-instances role
+    include_role:
+      name: stop-ec2-instances 
