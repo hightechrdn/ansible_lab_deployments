@@ -1,4 +1,13 @@
 ---
+# Misc vars
+vault_pw_test: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          39396330663161666336363636386238306431353361346536323966333464316437353661653137
+          3664383038376164653232633966313161333934373663350a366433336637303837323435396535
+          63613165363064343335363238646536346331356634396630653037376231336135336362633032
+          3564653132363130650a373934393964353032373166376137306338633232313566636565666134
+          38613631346363306563616332313236306336383239363162363637636663323364
+
 # General lab environment settings
 domain: "demo1.pd.stonedoor.io"
 project: "tower-{{ uuid }}"
@@ -8,14 +17,15 @@ ansible_winrm_operation_timeout_sec: 40
 ansible_winrm_read_timeout_sec: 120
 ansible_winrm_server_cert_validation: ignore
 
-# set default filters for destroy-ec2-instances role
+# Set default filters for destroy-ec2-instances role
 filters:
   "tag:deployment": "{{ uuid }}"
 
-# set AWS network defaults
+# Set AWS network defaults
 vpc_subnet_id: "subnet-0c020946935fab135"
 security_groups: "lab-systems-private"
 
+# Define EC2 instance details
 lab_systems:
   rhel8_tower:
     count: 3

@@ -4,6 +4,10 @@
   hosts: localhost
   gather_facts: false
   tasks:
+  - name: Verify that we have the correct vault password
+    debug:
+      msg: "{{ vault_pw_test }}"
+
   - name: Generate UUID
     shell:
       uuidgen | cut -b 1,2,3,4
