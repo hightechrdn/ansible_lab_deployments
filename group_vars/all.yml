@@ -17,7 +17,7 @@ ansible_winrm_operation_timeout_sec: 40
 ansible_winrm_read_timeout_sec: 120
 ansible_winrm_server_cert_validation: ignore
 
-# Set default filters for destroy-ec2-instances role
+# Set default filter for destroy, start, and stop EC2 instances
 filters:
   "tag:deployment": "{{ uuid }}"
 
