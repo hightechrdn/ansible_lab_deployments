@@ -3,7 +3,7 @@
 - name: Configure local accounts
   block:
   - name: Add local user
-    win_user:
+    ansible.windows.win_user:
       name: "{{ username }}"
       password: "{{ password }}"
       description: "{{ description }}"
@@ -12,14 +12,14 @@
       state: present
 
   - name: Add user to local Administrators group
-    win_group_membership:
+    ansible.windows.win_group_membership:
       name: Administrators
       members:
       - "{{ username }}"
       state: present
 
   - name: Add user to local Remote Desktop Users group
-    win_group_membership:
+    ansible.windows.win_group_membership:
       name: Remote Desktop Users
       members:
       - "{{ username }}"

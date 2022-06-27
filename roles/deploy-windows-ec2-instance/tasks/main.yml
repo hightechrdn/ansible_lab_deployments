@@ -4,15 +4,16 @@
 - name: Deploy new host on AWS EC2
   block:
   - name: Launch EC2 instance
-    ec2:
-       key_name: "{{ my_keyname }}"
-       group: "{{ security_groups }}"
-       instance_type: "{{ instance_type }}"
-       image: "{{ image }}"
+    amazon.aws.ec2_instance:
        count: "{{ count }}"
-       wait: true
+       image_id: "{{ image }}"
+       instance_type: "{{ instance_type }}"
+       key_name: "{{ my_keyname }}"
+       network:
+         assign_public_ip: no
        region: "{{ region }}"
-       instance_tags:
+       security_groups: "{{ security_groups }}"
+       tags:
          deployment: "{{ uuid }}"
          os_version: "{{ os_version }}"
          project: "{{ project }}"
@@ -20,27 +21,25 @@
          user: "{{ user }}"
        volumes: "{{ volumes }}"
        vpc_subnet_id: "{{ vpc_subnet_id }}"
-       assign_public_ip: no
+       wait: true
     register: ec2
 
   - name: Set EC2 instance Name
-    ec2_tag:
+    amazon.aws.ec2_tag:
       region: "{{ region }}"
-      resource: "{{ item.id }}"
+      resource: "{{ item.instance_id }}"
       state: present
       tags:
         Name: "{{ short_name }}"
     loop: "{{ ec2.instances }}"
 
-  - name: Add new instance to host group
-    add_host:
-      groups:
-        - launched_windows_instances
-      ami_launch_index: "{{ item.ami_launch_index }}"
-      canonical_name: "{{ short_name }}.{{ domain }}"
-      hostname: "{{ item.private_ip }}"
-      id: "{{ item.id }}"
-      private_ip: "{{ item.private_ip }}"
-      short_name: "{{ short_name }}"
-      uuid: "{{ uuid }}"
-    loop: "{{ ec2.instances }}"
+# This is a workaround for EC2 returning EC2 instance info without private IP/DNS
+- name: Update EC2 instance info
+  amazon.aws.ec2_instance_info:
+    filters: "{{ filters }}"
+    region: "{{ region }}"
+  register: ec2_info_updated
+
+- name: Add new EC2 instances to host groups
+  include_tasks: add_instance_to_host_groups.yml
+  loop: "{{ ec2.instances }}"

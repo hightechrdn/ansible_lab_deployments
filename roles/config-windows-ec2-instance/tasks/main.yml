@@ -3,17 +3,17 @@
 - name: Configure Windows system
   block:
   - name: Update hosts file
-    win_hosts:
+    community.windows.win_hosts:
       aliases: "{{ short_name }}"
       canonical_name: "{{ canonical_name }}"
       ip_address: "{{ ip_address }}"
       state: present
   
   - name: Update hostname
-    win_hostname:
+    ansible.windows.win_hostname:
       name: "{{ short_name }}"
     register: hostname_state
   
   - name: Windows system conditional reboot
-    win_reboot:
+    ansible.windows.win_reboot:
     when: hostname_state.reboot_required

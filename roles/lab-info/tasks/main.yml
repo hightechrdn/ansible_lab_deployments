@@ -1,5 +1,5 @@
 ---
 # tasks file for lab-info
 - name: Print lab sytem IP address and hostname
-  debug:
+  ansible.builtin.debug:
     msg: "{{ ip_address }} {{ canonical_name }} {{ short_name }}"

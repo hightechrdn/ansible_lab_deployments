@@ -3,17 +3,17 @@
 - name: Create AWS deployment key
   block:
   - name: Create directory for SSH key
-    file:
+    ansible.builtin.file:
       path: "{{ ssh_key_dir }}"
       state: directory
       mode: '0700'
 
   - name: Generate SSH key for local user
-    openssh_keypair:
+    community.crypto.openssh_keypair:
       path: "{{ my_keyfile }}"
 
   - name: Upload public key to AWS
-    ec2_key:
+    amazon.aws.ec2_key:
       name: "{{ my_keyname }}"
       key_material: "{{ lookup('file', '{{ my_public_key }}') }}"
       region: "{{ region }}"
@@ -21,7 +21,7 @@
   when: not remove_aws_key
 
 - name: Cleanup AWS deployment key
-  ec2_key:
+  amazon.aws.ec2_key:
     name: "{{ my_keyname }}"
     region: "{{ region }}"
     state: absent

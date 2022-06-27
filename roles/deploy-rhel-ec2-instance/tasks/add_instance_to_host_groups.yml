@@ -1,0 +1,17 @@
+# add_instance_to_host_groups.yml
+---
+- name: Set _private_ip_address fact
+  ansible.builtin.set_fact:
+    _private_ip_address: "{{ ec2_info_updated | community.general.json_query(\"instances[?instance_id=='\" + item.instance_id + \"'].private_ip_address\") }}"
+
+- name: Add new instance to host group
+  ansible.builtin.add_host:
+    groups: "{{ host_groups }}"
+    ami_launch_index: "{{ item.ami_launch_index }}"
+    canonical_name: "{{ short_name }}.{{ domain }}"
+    hostname: "{{ _private_ip_address[0] }}"
+    id: "{{ item.instance_id }}"
+    private_ip: "{{ _private_ip_address[0] }}"
+    short_name: "{{ short_name }}"
+    uuid: "{{ uuid }}"
+

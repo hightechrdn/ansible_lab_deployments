@@ -5,12 +5,12 @@
   gather_facts: false
   tasks:
   - name: Generate UUID
-    shell:
+    ansible.builtin.shell:
       uuidgen | cut -b 1,2,3,4
     register: uuid_output
 
   - name: Set UUID fact
-    set_fact:
+    ansible.builtin.set_fact:
       uuid: "{{ uuid_output.stdout }}"
   tags: always
 
@@ -21,8 +21,8 @@
   - group_vars/launched_windows_instances/main.yml
   tasks:
   - name: print debug 1
-    debug:
+    ansible.builtin.debug:
       msg: "The UUID is {{ uuid }}"
   - name: print debug 2
-    debug:
+    ansible.builtin.debug:
       msg: "ansible_password is {{ ansible_password }}"

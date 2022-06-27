@@ -5,5 +5,5 @@
   gather_facts: false
   tasks:
   - name: Call destroy-ec2-instances role
-    include_role:
+    ansible.builtin.include_role:
       name: destroy-ec2-instances 

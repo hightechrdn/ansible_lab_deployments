@@ -5,5 +5,5 @@
   gather_facts: false
   tasks:
   - name: Call stop-ec2-instances role
-    include_role:
+    ansible.builtin.include_role:
       name: stop-ec2-instances 

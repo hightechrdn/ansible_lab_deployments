@@ -5,20 +5,20 @@
   gather_facts: false
   tasks:
   - name: Verify that we have the correct vault password
-    debug:
+    ansible.builtin.debug:
       msg: "{{ vault_pw_test }}"
 
   - name: Generate UUID
-    shell:
+    ansible.builtin.shell:
       uuidgen | cut -b 1,2,3,4
     register: uuid_output
 
   - name: Set UUID fact
-    set_fact:
+    ansible.builtin.set_fact:
       uuid: "{{ uuid_output.stdout }}"
  
   - name: Print UUID
-    debug:
+    ansible.builtin.debug:
       msg: "New lab environment UUID = {{ uuid }}"
   tags: always
 
@@ -33,35 +33,35 @@
     volumes: "{{ lab_systems[system_type]['volumes'] }}"
   tasks:
   - name: Upload SSH public key to AWS EC2
-    include_role:
+    ansible.builtin.include_role:
       name: ssh-key-ec2
     tags: always
 
   - name: Provision RHEL 8 Tower systems
     vars:
       system_type: "rhel8_tower"
-    include_role:
+    ansible.builtin.include_role:
       name: deploy-rhel-ec2-instance
     tags: rhel8_tower
 
   - name: Provision RHEL 8 lab systems
     vars:
       system_type: "rhel8_client"
-    include_role:
+    ansible.builtin.include_role:
       name: deploy-rhel-ec2-instance
     tags: rhel8_client
 
   - name: Provision Windows 2019 lab systems
     vars:
       system_type: "win2019_client"
-    include_role:
+    ansible.builtin.include_role:
       name: deploy-windows-ec2-instance
     tags: win2019
 
   - name: Remove SSH public key from AWS EC2
     vars:
       remove_aws_key: true
-    include_role:
+    ansible.builtin.include_role:
       name: ssh-key-ec2
     tags: always
 
@@ -70,17 +70,17 @@
   hosts: launched_rhel_instances
   tasks:
   - name: Wait for host to start
-    wait_for_connection:
+    ansible.builtin.wait_for_connection:
       connect_timeout: 20
       sleep: 5
       timeout: 600
 
   - name: Add RHEL local accounts
-    include_role:
+    ansible.builtin.include_role:
       name: rhel-local-accounts
 
   - name: Configure RHEL ec2 instances
-    include_role:
+    ansible.builtin.include_role:
       name: config-rhel-ec2-instance
   tags: rhel8_client, rhel8_tower
 
@@ -89,17 +89,17 @@
   hosts: launched_windows_instances
   tasks:
   - name: Wait for host to start
-    wait_for_connection:
+    ansible.builtin.wait_for_connection:
       connect_timeout: 20
       sleep: 5
       timeout: 600
 
   - name: Add Windows local accounts
-    include_role:
+    ansible.builtin.include_role:
       name: win-local-accounts
 
   - name: Configure Windows ec2 instances
-    include_role:
+    ansible.builtin.include_role:
       name: config-windows-ec2-instance
   tags: win2019
 
@@ -108,7 +108,7 @@
   gather_facts: false
   tasks:
   - name: Print UUID
-    debug:
+    ansible.builtin.debug:
       msg: "Your lab UUID is {{ uuid }}."
   tags: always
 
@@ -117,7 +117,7 @@
   gather_facts: false
   tasks:
   - name: Print lab info - RHEL systtems
-    include_role:
+    ansible.builtin.include_role:
       name: lab-info
   tags: rhel8_client, rhel8_tower
 
@@ -126,6 +126,6 @@
   gather_facts: false
   tasks:
   - name: Print lab info - Windows systems
-    include_role:
+    ansible.builtin.include_role:
       name: lab-info
   tags: win2019
