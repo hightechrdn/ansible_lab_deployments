@@ -4,3 +4,4 @@
 # filter set to default value that won't match any EC2 instances as a safe guard
 filters: 
    "tag:Name": ryFZQBD3+dfVCbngdG9q8Q==
+instance_ids: []
